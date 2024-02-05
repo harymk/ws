@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 app.use(express.static("public"));
-// require("dotenv").config();
+ require("dotenv").config();
 
 const serverPort = process.env.PORT || 3000;
 const server = http.createServer(app);
@@ -79,5 +79,5 @@ const broadcast = (ws, message, includeSelf) => {
 
 
 app.get('/', (req, res) => {
-    res.send('welcome');
+  res.send('welcome');
 });
