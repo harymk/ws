@@ -1,6 +1,6 @@
 const express = require('express');
 //import { MongoClient } from "mongodb";
-require('dotenv').config()
+//require('dotenv').config()
 //console.log(process.env.MONGODB_CONNECTION_STRING) // remove this after you've confirmed it working
 
 const { MongoClient } = require("mongodb");
