@@ -30,7 +30,7 @@ server.listen(serverPort);
 console.log(`Server started on port ${serverPort} in stage ${process.env.NODE_ENV}`);
 
 wss.on("connection", async function (ws, req) {
-  console.log(ws);
+  //console.log(ws);
   console.log("Connection Opened");
   console.log("Client size: ", wss.clients.size);
 
@@ -46,6 +46,7 @@ wss.on("connection", async function (ws, req) {
       return;
     }
     broadcast(ws, stringifiedData, false);
+    update(stringifiedData);
   });
 
   ws.on("close", (data) => {
@@ -83,7 +84,7 @@ changeStream.on("change", next => {
         case 'update':
             //console.log(next.updateDescription.updatedFields);
             //console.log(next.documentKey._id);
-            console.log(next.fullDocument.deviceid);
+            //console.log(next);
             let dat = next.fullDocument;
 
             let stringifiedData = Buffer.from(JSON.stringify(dat));
@@ -100,13 +101,70 @@ changeStream.on("change", next => {
     await client.close();
   }
 
-
-
-
-
-
-
 });
+
+async function update(data){
+
+
+  var pdata = JSON.parse(data);
+ // var pdata = Buffer.from(JSON.parse(data));
+    console.log(pdata);
+  var value =  JSON.stringify(pdata.value);
+  console.log(value);
+
+
+    const txt = '{"$set":{ "' + pdata.action + '": ' + value +' }}'
+    const updateDoc = JSON.parse(txt);
+
+
+
+    console.log(updateDoc);
+
+
+  try {
+  
+    await clie.connect();
+    const database = clie.db('Device');
+    const messages = database.collection('Status');
+
+    const filter = { deviceid: pdata.deviceid};
+    
+    const options = { upsert: true };
+
+   // const updateDoc = { $set: { powerState: pdata.powerState }, };
+
+    //const updateDoc = "{ $set: { " + "powerState" +" : " + pdata.powerState + " }, };"
+
+    
+
+    const result = await messages.updateOne(filter, updateDoc, options)
+
+
+     //Query for our test message:
+    //const query = { deviceid: "led" };
+    //const message = await messages.findOne(query);
+   // console.log(data);
+    
+   //{"action":"powerState","deviceid":"led","value":"ON"}
+    //{"action":"color","deviceid":"led","value":{"brightness":"1","hue":"0","saturation":"1"}}
+  
+
+  } catch {
+
+    // Ensures that the client will close when you error
+   // await client.close();
+  }
+
+
+  
+};
+
+
+
+
+
+
+
 
 // Implement broadcast function because of ws doesn't have it
 const broadcast = (ws, message, includeSelf) => {
