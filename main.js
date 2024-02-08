@@ -65,7 +65,7 @@ wss.on("connection", async function (ws, req) {
     const database = clie.db('Device');
     const messages = database.collection('Status');
 
-    // Query for our test message:
+     //Query for our test message:
     //const query = { deviceid: "led" };
     //const message = await messages.findOne(query);
     //console.log(message);
@@ -84,11 +84,12 @@ changeStream.on("change", next => {
             //console.log(next.updateDescription.updatedFields);
             //console.log(next.documentKey._id);
             console.log(next.fullDocument.deviceid);
-            let dat = next.fullDocument.deviceid;
+            let dat = next.fullDocument;
 
-            let stringifiedData = dat.toString();
+            let stringifiedData = Buffer.from(JSON.stringify(dat));
+            
     
-            broadcast(ws, dat, true);
+            broadcast(ws, stringifiedData, true);
            // io.emit('chat message', next.fullDocument.deviceid);
     }
 });
