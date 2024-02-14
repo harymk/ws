@@ -13,7 +13,7 @@ let keepAliveId;
 
 
 const { MongoClient } = require("mongodb");
-MONGODB_CONNECTION_STRING='mongodb+srv://harymk:Urmine143@smarthome.2gnasl6.mongodb.net/?retryWrites=true&w=majority'
+MONGODB_CONNECTION_STRING='mongodb+srv://harymk:Urmineammu@smarthome.2gnasl6.mongodb.net/?retryWrites=true&w=majority'
 
 const clie = new MongoClient(MONGODB_CONNECTION_STRING);  // remove this after you've confirmed it working
 
