@@ -98,7 +98,7 @@ changeStream.on("change", next => {
   } catch {
 
     // Ensures that the client will close when you error
-    await client.close();
+    await clie.close();
   }
 
 });
@@ -152,7 +152,7 @@ async function update(data){
   } catch {
 
     // Ensures that the client will close when you error
-   // await client.close();
+    await clie.close();
   }
 
 
