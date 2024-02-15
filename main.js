@@ -87,10 +87,16 @@ changeStream.on("change", next => {
             //console.log(next);
             let dat = next.fullDocument;
 
-            let stringifiedData = Buffer.from(JSON.stringify(dat));
+            let stringifiedData = JSON.stringify(dat);
+
+      wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(stringifiedData);
+      }
+    });
             
     
-            broadcast(ws, stringifiedData, true);
+           // broadcast(ws, stringifiedData, true);
            // io.emit('chat message', next.fullDocument.deviceid);
     }
 });
